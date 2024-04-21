@@ -1,0 +1,14 @@
+{
+    "name": "Abed Price Fetcher",
+    "short_name": "PriceFetcher",
+    "icons": [
+      {
+        "src": "image/tether.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone"
+  }
+  

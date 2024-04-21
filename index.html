@@ -1,15 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>
-            Abed webpage!
-        </title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
+  </head>
 
-    <body>
-        <h1 class="vasat">Welcome to my webpage!</h1>
-        <br/>
-        <h4>This is just a personal webpage for learning new things.</h4>        
-    </body>
+  <body>
+    <div id="container" class="container">
+      <!-- <div class="item">
+            <div class="heading">
+                <span class="image">
+                    <img src="./images/Bitcoin.png" alt="">
+                </span>
+                <span class="title">BitCoin</span>
+            </div>
+            <div class="price">254,444 $</div>
+            <div class="change green">0.98% (Low)</div>
+        </div> -->
+    </div>
+
+    <script>
+      function number_formatter(manim_number) {
+        return new Intl.NumberFormat().format(manim_number);
+      }
+
+      var xhttp_bitbarg = new XMLHttpRequest();
+      xhttp_bitbarg.responseType = "json";
+      bitbarg_api_url = "https://api.bitbarg.com/api/v1/currencies";
+      xhttp_bitbarg.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          let tether_price = xhttp_bitbarg.response.result.meta.usdtPrice;
+          document.getElementById("container").innerHTML += `<div class="item">
+                    <div class="heading">
+                        <span class="image"><img src="images/tether.png" alt=""></span>
+                        <span class="title">تتر</span>
+                    </div>
+                    <div class="price">${number_formatter(tether_price)} T</div>
+                    <div class="change green"></div>`;
+        }
+      };
+
+      xhttp_bitbarg.open("GET", bitbarg_api_url);
+      xhttp_bitbarg.send();
+
+      tgju_items = {
+        sekee: 137138,
+        nim: 137139,
+        rob: 137140,
+        ons: 137119,
+        geram18: 137121,
+        "crypto-bitcoin": 398096,
+        price_try: 137225,
+        WTI: 131400,
+        price_dollar_rl: 137203,
+      };
+
+      prices_order = [
+        398096, 137203, 137119, 137225, 137121, 137138, 137139, 137140, 131400,
+        524691, 527833, 527834,
+      ];
+
+      var xhttp_tgju = new XMLHttpRequest();
+      xhttp_tgju.responseType = "json";
+      tgju_url =
+        "https://api.tgju.org/v1/widget/tmp?keys=137203,137119,137138,137139,137140,137119,137121,398096,137225,131400,524691,527833,527834";
+      xhttp_tgju.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          let items = xhttp_tgju.response.response.indicators;
+
+          const reorderedItems = prices_order.map((id) => {
+            return items.find((item) => item.item_id == id);
+          });
+
+          reorderedItems.forEach((element) => {
+            let change_color = element.dt == "high" ? "green" : "red";
+            let change_icon = element.dt == "high" ? "⬈" : "⬊";
+            document.getElementById(
+              "container"
+            ).innerHTML += `<div class="item">
+                        <div class="heading">
+                            <span class="image"><img src="./images/${
+                              element.item_id
+                            }.png" alt="gulu"></span>
+                            <span class="title">${element.title}</span>
+                        </div>
+                        <div class="price">${number_formatter(element.p)}</div>
+                        <div class="change ${change_color}">${
+              element.dp
+            }% <span>${change_icon}</span></div>`;
+          });
+        }
+      };
+      xhttp_tgju.open("GET", tgju_url);
+      xhttp_tgju.send();
+    </script>
+  </body>
 </html>
